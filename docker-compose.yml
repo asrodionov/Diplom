@@ -14,7 +14,6 @@ services:
       - MYSQL_PASSWORD=pass
   node-app:
     build: .
-    command: npm start
     image: node-app:1.0
     ports:
       - '9999:9999'
