@@ -5,20 +5,18 @@ import ru.netology.web.data.DataHelper;
 
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class ByTravelPage {
-    private SelenideElement heading = $("h3").find(String.valueOf(exactText("Оплата по карте")));
+    private SelenideElement heading = $$("h3").find((exactText("Оплата по карте")));
 
-    private SelenideElement numberCard = $("[data-test-id=login] input");
-    private SelenideElement monthCard = $("[data-test-id=password] input");
-    private SelenideElement yearCard = $("[data-test-id=password] input");
-    private SelenideElement ownerCard = $("[data-test-id=action-login]");
-    private SelenideElement cvcCard = $("[data-test-id=action-login]");
+    private SelenideElement numberCard = $$("input.input__control").get(0);
+    private SelenideElement monthCard = $$("input.input__control").get(1);
+    private SelenideElement yearCard = $$("input.input__control").get(2);
+    private SelenideElement ownerCard = $$("input.input__control").get(3);
+    private SelenideElement cvcCard = $$("input.input__control").get(4);
 
-    private SelenideElement proceedButton = $("button").find(String.valueOf(exactText("Продолжить")));
-
-    private SelenideElement successAlert = $("button").find(String.valueOf(exactText("Продолжить")));
+    private SelenideElement proceedButton = $$("button").find((exactText("Продолжить")));
 
     public ByTravelPage() {
         heading.shouldBe(visible);

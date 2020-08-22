@@ -2,14 +2,15 @@ package ru.netology.web.page;
 
 import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class SuccessAlertPage {
-    private SelenideElement successAlert = $(".heading");
+    private SelenideElement successAlert = $$(".notification__title").find((exactText("Успешно")));
 
     public SuccessAlertPage() {
-        successAlert.shouldBe(visible);
+        successAlert.waitUntil(visible, 20000);
     }
 
 }
