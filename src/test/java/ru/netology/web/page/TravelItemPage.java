@@ -21,7 +21,8 @@ public class TravelItemPage {
         return new ByTravelPage();
     }
 
-    public void byInCredit() {
+    public ByTravelInCreditPage byInCredit() {
         byInCreditButton.click();
+        return new ByTravelInCreditPage();
     }
 }
