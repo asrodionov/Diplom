@@ -13,7 +13,18 @@ services:
       - MYSQL_USER=app
       - MYSQL_PASSWORD=pass
   node-app:
-    build: .
+    build: ./app
     image: node-app:1.0
     ports:
       - '9999:9999'
+  postgresql:
+    image: postgres:12-alpine
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./data:/var/lib/postgresql
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_HOST_AUTH_METHOD=trust

@@ -1,13 +1,13 @@
 package ru.netology.web.test;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import lombok.val;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.netology.web.data.DataHelper;
-import ru.netology.web.page.TravelItemPage;
-import io.qameta.allure.selenide.AllureSelenide;
+import ru.netology.web.data.SqlDataHelper;
+import ru.netology.web.pages.TravelItemPage;
 
 import java.sql.SQLException;
 
@@ -29,80 +29,69 @@ public class TravelByTest {
     void shouldSuccessPurchaseWithGenerateData() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.generateCardInfo();
-        byTravelPage.SuccessAlert();
-        assertEquals(DataHelper.getStatusLastTransaction(), "APPROVED");
-    }
-
-    @Test
-    void shouldRightPriceInDb() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
-        val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.generateCardInfo();
-        byTravelPage.SuccessAlert();
-        assertEquals(DataHelper.getPriceLastTransaction(), "45000");
-
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setGenerateCardInfo();
+        byTravelPage.successAlert();
+        assertEquals(SqlDataHelper.getStatusLastTransaction(), "APPROVED");
     }
 
     @Test
     void shouldSuccessPurchaseWithDataScenario1() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.validCardInfo(1);
-        byTravelPage.SuccessAlert();
-        assertEquals(DataHelper.getStatusLastTransaction(), "APPROVED");
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setValidCardInfoScenario1();
+        byTravelPage.successAlert();
+        assertEquals(SqlDataHelper.getStatusLastTransaction(), "APPROVED");
     }
 
     @Test
     void shouldSuccessPurchaseWithDataScenario2() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.validCardInfo(2);
-        byTravelPage.SuccessAlert();
-        assertEquals(DataHelper.getStatusLastTransaction(), "APPROVED");
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setValidCardInfoScenario2();
+        byTravelPage.successAlert();
+        assertEquals(SqlDataHelper.getStatusLastTransaction(), "APPROVED");
     }
 
     @Test
     void shouldSuccessPurchaseWithDataScenario3() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.validCardInfo(3);
-        byTravelPage.SuccessAlert();
-        assertEquals(DataHelper.getStatusLastTransaction(), "APPROVED");
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setValidCardInfoScenario3();
+        byTravelPage.successAlert();
+        assertEquals(SqlDataHelper.getStatusLastTransaction(), "APPROVED");
     }
 
     @Test
     void shouldSuccessPurchaseWithDataScenario4() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.validCardInfo(4);
-        byTravelPage.SuccessAlert();
-        assertEquals(DataHelper.getStatusLastTransaction(), "APPROVED");
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setValidCardInfoScenario4();
+        byTravelPage.successAlert();
+        assertEquals(SqlDataHelper.getStatusLastTransaction(), "APPROVED");
     }
 
     @Test
     void shouldErrorPurchaseWithDataScenario5() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.notValidNumberCard();
-        byTravelPage.notValidCardInfo(5);
-        byTravelPage.ErrorAlert();
-        assertEquals(DataHelper.getStatusLastTransaction(), "DECLINED");
+        byTravelPage.setNotValidNumberCard();
+        byTravelPage.setNotValidCardInfoScenario5();
+        byTravelPage.errorAlert();
+        assertEquals(SqlDataHelper.getStatusLastTransaction(), "DECLINED");
     }
 
     @Test
     void shouldErrorPurchaseWithDataScenario6() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.notValidCardInfo(6);
-        byTravelPage.ErrorAlert();
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setNotValidCardInfoScenario6();
+        byTravelPage.errorAlert();
         byTravelPage.validityCardError();
     }
 
@@ -110,8 +99,8 @@ public class TravelByTest {
     void shouldErrorPurchaseWithDataScenario7() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.notValidCardInfo(7);
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setNotValidCardInfoScenario7();
         byTravelPage.validityCardError();
     }
 
@@ -119,8 +108,8 @@ public class TravelByTest {
     void shouldErrorPurchaseWithDataScenario8() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.notValidCardInfo(8);
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setNotValidCardInfoScenario8();
         byTravelPage.validityYearCardError();
     }
 
@@ -128,8 +117,8 @@ public class TravelByTest {
     void shouldErrorPurchaseWithDataScenario9() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.notValidCardInfo(9);
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setNotValidCardInfoScenario9();
         byTravelPage.validityCardError();
     }
 
@@ -137,8 +126,8 @@ public class TravelByTest {
     void shouldErrorPurchaseWithDataScenario10() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.notValidCardInfo(10);
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setNotValidCardInfoScenario10();
         byTravelPage.ownerCardError();
     }
 
@@ -146,8 +135,8 @@ public class TravelByTest {
     void shouldErrorPurchaseWithDataScenario11() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.notValidCardInfo(11);
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setNotValidCardInfoScenario11();
         byTravelPage.ownerCardError();
     }
 
@@ -155,8 +144,28 @@ public class TravelByTest {
     void shouldErrorPurchaseWithDataScenario12() throws SQLException {
         val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCash();
-        byTravelPage.validNumberCard();
-        byTravelPage.notValidCardInfo(12);
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setNotValidCardInfoScenario12();
         byTravelPage.ownerCardError();
+    }
+
+    @Test
+    void shouldRightPriceInDb() throws SQLException {
+        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
+        val byTravelPage = travelItemPage.byInCash();
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setValidCardInfoScenario1();
+        byTravelPage.successAlert();
+        assertEquals(SqlDataHelper.getPriceLastTransaction(), "45000");
+    }
+
+    @Test
+    void shouldRightPaymentIdInDb() throws SQLException {
+        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
+        val byTravelPage = travelItemPage.byInCash();
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setValidCardInfoScenario1();
+        byTravelPage.successAlert();
+        assertEquals(SqlDataHelper.getPaymentId(), SqlDataHelper.getTransactionId());
     }
 }

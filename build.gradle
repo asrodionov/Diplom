@@ -34,6 +34,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.12'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
     testImplementation 'mysql:mysql-connector-java:8.0.18'
+    compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
     testImplementation 'io.qameta.allure:allure-selenide:2.13.3'
 }
@@ -41,4 +42,5 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    systemProperty 'spring.datasource.url', System.getProperty('spring.datasource.url')
 }
