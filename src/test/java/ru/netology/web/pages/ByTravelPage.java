@@ -39,115 +39,27 @@ public class ByTravelPage {
         proceedButton.click();
     }
 
-    public void setValidCardInfoScenario1() {
-        monthCard.setValue(DataHelper.getValidCardInfoScenario1().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getValidCardInfoScenario1().getYear()));
-        ownerCard.setValue(DataHelper.getValidCardInfoScenario1().getName());
-        cvcCard.setValue(DataHelper.getValidCardInfoScenario1().getCvc());
+    public void setCardInfo(DataHelper.CardInfo cardInfo) {
+        monthCard.setValue(cardInfo.getMonth());
+        yearCard.setValue(String.valueOf(cardInfo.getYear()));
+        ownerCard.setValue(cardInfo.getName());
+        cvcCard.setValue(cardInfo.getCvc());
         proceedButton.click();
     }
 
-    public void setValidCardInfoScenario2() {
-        monthCard.setValue(DataHelper.getValidCardInfoScenario2().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getValidCardInfoScenario2().getYear()));
-        ownerCard.setValue(DataHelper.getValidCardInfoScenario2().getName());
-        cvcCard.setValue(DataHelper.getValidCardInfoScenario2().getCvc());
-        proceedButton.click();
-    }
-
-    public void setValidCardInfoScenario3() {
-        monthCard.setValue(DataHelper.getValidCardInfoScenario3().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getValidCardInfoScenario3().getYear()));
-        ownerCard.setValue(DataHelper.getValidCardInfoScenario3().getName());
-        cvcCard.setValue(DataHelper.getValidCardInfoScenario3().getCvc());
-        proceedButton.click();
-    }
-
-    public void setValidCardInfoScenario4() {
-        monthCard.setValue(DataHelper.getValidCardInfoScenario4().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getValidCardInfoScenario4().getYear()));
-        ownerCard.setValue(DataHelper.getValidCardInfoScenario4().getName());
-        cvcCard.setValue(DataHelper.getValidCardInfoScenario4().getCvc());
-        proceedButton.click();
-    }
-
-    public void setNotValidCardInfoScenario5() {
-        monthCard.setValue(DataHelper.getNotValidCardInfoScenario5().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getNotValidCardInfoScenario5().getYear()));
-        ownerCard.setValue(DataHelper.getNotValidCardInfoScenario5().getName());
-        cvcCard.setValue(DataHelper.getNotValidCardInfoScenario5().getCvc());
-        proceedButton.click();
-    }
-
-    public void setNotValidCardInfoScenario6() {
-        monthCard.setValue(DataHelper.getNotValidCardInfoScenario6().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getNotValidCardInfoScenario6().getYear()));
-        ownerCard.setValue(DataHelper.getNotValidCardInfoScenario6().getName());
-        cvcCard.setValue(DataHelper.getNotValidCardInfoScenario6().getCvc());
-        proceedButton.click();
-    }
-
-    public void setNotValidCardInfoScenario7() {
-        monthCard.setValue(DataHelper.getNotValidCardInfoScenario7().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getNotValidCardInfoScenario7().getYear()));
-        ownerCard.setValue(DataHelper.getNotValidCardInfoScenario7().getName());
-        cvcCard.setValue(DataHelper.getNotValidCardInfoScenario7().getCvc());
-        proceedButton.click();
-    }
-
-    public void setNotValidCardInfoScenario8() {
-        monthCard.setValue(DataHelper.getNotValidCardInfoScenario8().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getNotValidCardInfoScenario8().getYear()));
-        ownerCard.setValue(DataHelper.getNotValidCardInfoScenario8().getName());
-        cvcCard.setValue(DataHelper.getNotValidCardInfoScenario8().getCvc());
-        proceedButton.click();
-    }
-
-    public void setNotValidCardInfoScenario9() {
-        monthCard.setValue(DataHelper.getNotValidCardInfoScenario9().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getNotValidCardInfoScenario9().getYear()));
-        ownerCard.setValue(DataHelper.getNotValidCardInfoScenario9().getName());
-        cvcCard.setValue(DataHelper.getNotValidCardInfoScenario9().getCvc());
-        proceedButton.click();
-    }
-
-    public void setNotValidCardInfoScenario10() {
-        monthCard.setValue(DataHelper.getNotValidCardInfoScenario10().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getNotValidCardInfoScenario10().getYear()));
-        ownerCard.setValue(DataHelper.getNotValidCardInfoScenario10().getName());
-        cvcCard.setValue(DataHelper.getNotValidCardInfoScenario10().getCvc());
-        proceedButton.click();
-    }
-
-    public void setNotValidCardInfoScenario11() {
-        monthCard.setValue(DataHelper.getNotValidCardInfoScenario11().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getNotValidCardInfoScenario11().getYear()));
-        ownerCard.setValue(DataHelper.getNotValidCardInfoScenario11().getName());
-        cvcCard.setValue(DataHelper.getNotValidCardInfoScenario11().getCvc());
-        proceedButton.click();
-    }
-
-    public void setNotValidCardInfoScenario12() {
-        monthCard.setValue(DataHelper.getNotValidCardInfoScenario12().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.getNotValidCardInfoScenario12().getYear()));
-        ownerCard.setValue(DataHelper.getNotValidCardInfoScenario12().getName());
-        cvcCard.setValue(DataHelper.getNotValidCardInfoScenario12().getCvc());
-        proceedButton.click();
-    }
-
-    public void successAlert() {
+    public void checkSuccessAlert() {
         successAlert.waitUntil(visible, 40000);
     }
 
-    public void errorAlert() {
+    public void checkErrorAlert() {
         errorAlert.waitUntil(visible, 40000);
     }
 
-    public void validityCardError() {
+    public void checkValidityCardError() {
         validityError.shouldBe(visible);
     }
 
-    public void validityYearCardError() { validityYearError.shouldBe(visible); }
+    public void checkValidityYearCardError() { validityYearError.shouldBe(visible); }
 
-    public void ownerCardError() { ownerCardError.shouldBe(visible); }
+    public void checkOwnerCardError() { ownerCardError.shouldBe(visible); }
 }

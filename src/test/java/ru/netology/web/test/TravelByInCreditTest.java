@@ -6,15 +6,41 @@ import lombok.val;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import ru.netology.web.data.CardYear;
+import ru.netology.web.data.DataHelper;
 import ru.netology.web.data.SqlDataHelper;
 import ru.netology.web.pages.TravelItemPage;
 
-import java.sql.SQLException;
+import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TravelByInCreditTest {
+
+    public static Stream<DataHelper.CardInfo> getValidCardData() {
+        return Stream.of(
+                new DataHelper.CardInfo("06", CardYear.getYearCard(1), "ANDREI RODIONOV", "691"),
+                new DataHelper.CardInfo("01", CardYear.getYearCard(1), "ANDREI RODIONOV", "999"),
+                new DataHelper.CardInfo("12", CardYear.getYearCard(0), "ANDREI RODIONOV", "691"),
+                new DataHelper.CardInfo("09", CardYear.getYearCard(0), "ANDREI RODIONOV", "111"));
+    }
+
+    public static Stream<DataHelper.CardInfo> getNotValidCardDataForValidityCardError() {
+        return Stream.of(
+                new DataHelper.CardInfo("00", CardYear.getYearCard(1), "ANDREI RODIONOV", "691"),
+                new DataHelper.CardInfo("13", CardYear.getYearCard(1), "ANDREI RODIONOV", "691"),
+                new DataHelper.CardInfo("06", CardYear.getYearCard(8), "ANDREI RODIONOV", "691"));
+    }
+
+    public static Stream<DataHelper.CardInfo> getNotValidCardDataForOwnerCardError() {
+        return Stream.of(
+                new DataHelper.CardInfo("06", CardYear.getYearCard(1), "АНДРЕЙ РОДИОНОВ", "691"),
+                new DataHelper.CardInfo("06", CardYear.getYearCard(1), "123", "691"),
+                new DataHelper.CardInfo("06", CardYear.getYearCard(1), "%&$", "691"));
+    }
 
     @BeforeAll
     static void setUpAll() {
@@ -26,135 +52,72 @@ public class TravelByInCreditTest {
     }
 
     @Test
-    void shouldSuccessCreditPurchaseWithGenerateData() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
+    void shouldSuccessCreditPurchaseWithGenerateData()  {
+        val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setValidNumberCard();
         byTravelPage.setGenerateCardInfo();
-        byTravelPage.successAlert();
+        byTravelPage.checkSuccessAlert();
         assertEquals(SqlDataHelper.getStatusLastCreditTransaction(), "APPROVED");
     }
 
-    @Test
-    void shouldSuccessCreditPurchaseWithDataScenario1() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
+    @ParameterizedTest
+    @MethodSource("getValidCardData")
+    void shouldSuccessCreditPurchaseWithData(DataHelper.CardInfo cardInfo)  {
+        val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setValidNumberCard();
-        byTravelPage.setValidCardInfoScenario1();
-        byTravelPage.successAlert();
+        byTravelPage.setCardInfo(cardInfo);
+        byTravelPage.checkSuccessAlert();
         assertEquals(SqlDataHelper.getStatusLastCreditTransaction(), "APPROVED");
     }
 
     @Test
-    void shouldSuccessCreditPurchaseWithDataScenario2() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
-        val byTravelPage = travelItemPage.byInCredit();
-        byTravelPage.setValidNumberCard();
-        byTravelPage.setValidCardInfoScenario2();
-        byTravelPage.successAlert();
-        assertEquals(SqlDataHelper.getStatusLastCreditTransaction(), "APPROVED");
-    }
-
-    @Test
-    void shouldSuccessCreditPurchaseWithDataScenario3() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
-        val byTravelPage = travelItemPage.byInCredit();
-        byTravelPage.setValidNumberCard();
-        byTravelPage.setValidCardInfoScenario3();
-        byTravelPage.successAlert();
-        assertEquals(SqlDataHelper.getStatusLastCreditTransaction(), "APPROVED");
-    }
-
-    @Test
-    void shouldSuccessCreditPurchaseWithDataScenario4() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
-        val byTravelPage = travelItemPage.byInCredit();
-        byTravelPage.setValidNumberCard();
-        byTravelPage.setValidCardInfoScenario4();
-        byTravelPage.successAlert();
-        assertEquals(SqlDataHelper.getStatusLastCreditTransaction(), "APPROVED");
-    }
-
-    @Test
-    void shouldErrorCreditPurchaseWithDataScenario5() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
+    void shouldErrorCreditPurchaseWithNotValidNumberCard() {
+        val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setNotValidNumberCard();
-        byTravelPage.setNotValidCardInfoScenario5();
-        byTravelPage.errorAlert();
+        byTravelPage.setCardInfo(new DataHelper.CardInfo("07", CardYear.getYearCard(1), "ANDREI RODIONOV", "691"));
+        byTravelPage.checkErrorAlert();
         assertEquals(SqlDataHelper.getStatusLastCreditTransaction(), "DECLINED");
     }
 
-    @Test
-    void shouldErrorCreditPurchaseWithDataScenario6() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
+    @ParameterizedTest
+    @MethodSource("getNotValidCardDataForValidityCardError")
+    void shouldErrorCreditPurchaseWithDataValidityCardError(DataHelper.CardInfo cardInfo) {
+        val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setValidNumberCard();
-        byTravelPage.setNotValidCardInfoScenario6();
-        byTravelPage.errorAlert();
+        byTravelPage.setCardInfo(cardInfo);
+        byTravelPage.checkValidityCardError();
     }
 
     @Test
-    void shouldErrorCreditPurchaseWithDataScenario7() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
+    void shouldErrorCreditPurchaseWithDataValidityYearCardError() {
+        val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setValidNumberCard();
-        byTravelPage.setNotValidCardInfoScenario7();
-        byTravelPage.validityCardError();
+        byTravelPage.setCardInfo(new DataHelper.CardInfo("06", CardYear.getYearCard(-1), "ANDREI RODIONOV", "691"));
+        byTravelPage.checkValidityYearCardError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNotValidCardDataForOwnerCardError")
+    void shouldErrorCreditPurchaseWithDataOwnerCardError(DataHelper.CardInfo cardInfo)  {
+        val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
+        val byTravelPage = travelItemPage.byInCredit();
+        byTravelPage.setValidNumberCard();
+        byTravelPage.setCardInfo(cardInfo);
+        byTravelPage.checkOwnerCardError();
     }
 
     @Test
-    void shouldErrorCreditPurchaseWithDataScenario8() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
+    void shouldRightCreditIdInDb()  {
+        val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setValidNumberCard();
-        byTravelPage.setNotValidCardInfoScenario8();
-        byTravelPage.validityYearCardError();
-    }
-
-    @Test
-    void shouldErrorCreditPurchaseWithDataScenario9() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
-        val byTravelPage = travelItemPage.byInCredit();
-        byTravelPage.setValidNumberCard();
-        byTravelPage.setNotValidCardInfoScenario9();
-        byTravelPage.validityCardError();
-    }
-
-    @Test
-    void shouldErrorCreditPurchaseWithDataScenario10() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
-        val byTravelPage = travelItemPage.byInCredit();
-        byTravelPage.setValidNumberCard();
-        byTravelPage.setNotValidCardInfoScenario6();
-        byTravelPage.errorAlert();
-    }
-
-    @Test
-    void shouldErrorCreditPurchaseWithDataScenario11() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
-        val byTravelPage = travelItemPage.byInCredit();
-        byTravelPage.setValidNumberCard();
-        byTravelPage.setNotValidCardInfoScenario11();
-        byTravelPage.errorAlert();
-    }
-
-    @Test
-    void shouldErrorCreditPurchaseWithDataScenario12() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
-        val byTravelPage = travelItemPage.byInCredit();
-        byTravelPage.setValidNumberCard();
-        byTravelPage.setNotValidCardInfoScenario12();
-        byTravelPage.errorAlert();
-    }
-
-    @Test
-    void shouldRightCreditIdInDb() throws SQLException {
-        val travelItemPage = open("http://localhost:8080", TravelItemPage.class);
-        val byTravelPage = travelItemPage.byInCredit();
-        byTravelPage.setValidNumberCard();
-        byTravelPage.setValidCardInfoScenario1();
-        byTravelPage.successAlert();
+        byTravelPage.setGenerateCardInfo();
+        byTravelPage.checkSuccessAlert();
         assertEquals(SqlDataHelper.getCreditId(), SqlDataHelper.getIdInCreditTable());
     }
 }

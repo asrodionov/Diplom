@@ -19,7 +19,7 @@ public class SqlDataHelper {
 
     public static DataBaseConn getDataBaseConn() {
 
-        return new DataBaseConn(System.getProperty("spring.datasource.url"), "app", "pass");
+        return new DataBaseConn(System.getProperty("db.url"), System.getProperty("db.login"), System.getProperty("db.password"));
 
     }
 

@@ -6,6 +6,8 @@ HELP.md
 build/
 data/
 target/
+data_ms/
+data_ps/
 
 ### STS ###
 .apt_generated
@@ -47,3 +49,4 @@ out/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+
