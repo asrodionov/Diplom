@@ -31,11 +31,11 @@ public class ByTravelPage {
         numberCard.setValue(DataHelper.getNotValidCardNumber().getNumber());
     }
 
-    public void setGenerateCardInfo() {
-        monthCard.setValue(DataHelper.generateCardInfo().getMonth());
-        yearCard.setValue(String.valueOf(DataHelper.generateCardInfo().getYear()));
-        ownerCard.setValue(DataHelper.generateCardInfo().getName());
-        cvcCard.setValue(DataHelper.generateCardInfo().getCvc());
+    public void setRandomGenerateCardInfo() {
+        monthCard.setValue(DataHelper.generateRandomCardInfo().getMonth());
+        yearCard.setValue(String.valueOf(DataHelper.generateRandomCardInfo().getYear()));
+        ownerCard.setValue(DataHelper.generateRandomCardInfo().getName());
+        cvcCard.setValue(DataHelper.generateRandomCardInfo().getCvc());
         proceedButton.click();
     }
 

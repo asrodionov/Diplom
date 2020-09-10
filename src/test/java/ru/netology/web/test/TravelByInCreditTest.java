@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import ru.netology.web.data.CardYear;
 import ru.netology.web.data.DataHelper;
 import ru.netology.web.data.SqlDataHelper;
 import ru.netology.web.pages.TravelItemPage;
@@ -22,24 +21,24 @@ public class TravelByInCreditTest {
 
     public static Stream<DataHelper.CardInfo> getValidCardData() {
         return Stream.of(
-                new DataHelper.CardInfo("06", CardYear.getYearCard(1), "ANDREI RODIONOV", "691"),
-                new DataHelper.CardInfo("01", CardYear.getYearCard(1), "ANDREI RODIONOV", "999"),
-                new DataHelper.CardInfo("12", CardYear.getYearCard(0), "ANDREI RODIONOV", "691"),
-                new DataHelper.CardInfo("09", CardYear.getYearCard(0), "ANDREI RODIONOV", "111"));
+                new DataHelper.CardInfo("06", DataHelper.getYearCard(1), "ANDREI RODIONOV", "691"),
+                new DataHelper.CardInfo("01", DataHelper.getYearCard(1), "ANDREI RODIONOV", "999"),
+                new DataHelper.CardInfo("12", DataHelper.getYearCard(0), "ANDREI RODIONOV", "691"),
+                new DataHelper.CardInfo("09", DataHelper.getYearCard(0), "ANDREI RODIONOV", "111"));
     }
 
     public static Stream<DataHelper.CardInfo> getNotValidCardDataForValidityCardError() {
         return Stream.of(
-                new DataHelper.CardInfo("00", CardYear.getYearCard(1), "ANDREI RODIONOV", "691"),
-                new DataHelper.CardInfo("13", CardYear.getYearCard(1), "ANDREI RODIONOV", "691"),
-                new DataHelper.CardInfo("06", CardYear.getYearCard(8), "ANDREI RODIONOV", "691"));
+                new DataHelper.CardInfo("00", DataHelper.getYearCard(1), "ANDREI RODIONOV", "691"),
+                new DataHelper.CardInfo("13", DataHelper.getYearCard(1), "ANDREI RODIONOV", "691"),
+                new DataHelper.CardInfo("06", DataHelper.getYearCard(8), "ANDREI RODIONOV", "691"));
     }
 
     public static Stream<DataHelper.CardInfo> getNotValidCardDataForOwnerCardError() {
         return Stream.of(
-                new DataHelper.CardInfo("06", CardYear.getYearCard(1), "АНДРЕЙ РОДИОНОВ", "691"),
-                new DataHelper.CardInfo("06", CardYear.getYearCard(1), "123", "691"),
-                new DataHelper.CardInfo("06", CardYear.getYearCard(1), "%&$", "691"));
+                new DataHelper.CardInfo("06", DataHelper.getYearCard(1), "АНДРЕЙ РОДИОНОВ", "691"),
+                new DataHelper.CardInfo("06", DataHelper.getYearCard(1), "123", "691"),
+                new DataHelper.CardInfo("06", DataHelper.getYearCard(1), "%&$", "691"));
     }
 
     @BeforeAll
@@ -56,7 +55,7 @@ public class TravelByInCreditTest {
         val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setValidNumberCard();
-        byTravelPage.setGenerateCardInfo();
+        byTravelPage.setRandomGenerateCardInfo();
         byTravelPage.checkSuccessAlert();
         assertEquals(SqlDataHelper.getStatusLastCreditTransaction(), "APPROVED");
     }
@@ -77,7 +76,7 @@ public class TravelByInCreditTest {
         val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setNotValidNumberCard();
-        byTravelPage.setCardInfo(new DataHelper.CardInfo("07", CardYear.getYearCard(1), "ANDREI RODIONOV", "691"));
+        byTravelPage.setCardInfo(new DataHelper.CardInfo("07", DataHelper.getYearCard(1), "ANDREI RODIONOV", "691"));
         byTravelPage.checkErrorAlert();
         assertEquals(SqlDataHelper.getStatusLastCreditTransaction(), "DECLINED");
     }
@@ -97,7 +96,7 @@ public class TravelByInCreditTest {
         val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setValidNumberCard();
-        byTravelPage.setCardInfo(new DataHelper.CardInfo("06", CardYear.getYearCard(-1), "ANDREI RODIONOV", "691"));
+        byTravelPage.setCardInfo(new DataHelper.CardInfo("06", DataHelper.getYearCard(-1), "ANDREI RODIONOV", "691"));
         byTravelPage.checkValidityYearCardError();
     }
 
@@ -116,7 +115,7 @@ public class TravelByInCreditTest {
         val travelItemPage = open(System.getProperty("sut.url"), TravelItemPage.class);
         val byTravelPage = travelItemPage.byInCredit();
         byTravelPage.setValidNumberCard();
-        byTravelPage.setGenerateCardInfo();
+        byTravelPage.setRandomGenerateCardInfo();
         byTravelPage.checkSuccessAlert();
         assertEquals(SqlDataHelper.getCreditId(), SqlDataHelper.getIdInCreditTable());
     }
