@@ -1,3 +1,10 @@
+<a href="https://github.com/asrodionov/Diplom/blob/master/docs/Plan.md">План тестирования покупки тура в сервисе «Путешествие дня»</a>
+
+<a href="https://github.com/asrodionov/Diplom/blob/master/docs/Report.md">Отчет по итогам тестирования покупки тура в сервисе «Путешествие дня»</a>
+
+<a href="https://github.com/asrodionov/Diplom/blob/master/docs/Summary.md">Отчет по итогам автоматизации тестирования покупки тура в сервисе «Путешествие дня»</a>
+
+
 ## Шаги для запуска автотестов с использованием СУБД MySQL
 
 1. Копируем репозиторий - ```git clone```
