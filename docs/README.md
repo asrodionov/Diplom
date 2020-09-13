@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/imy7jefaj7t5bh9v?svg=true)](https://ci.appveyor.com/project/asrodionov/diplom)
+
 <a href="https://github.com/asrodionov/Diplom/blob/master/docs/Plan.md">План тестирования покупки тура в сервисе «Путешествие дня»</a>
 
 <a href="https://github.com/asrodionov/Diplom/blob/master/docs/Report.md">Отчет по итогам тестирования покупки тура в сервисе «Путешествие дня»</a>
